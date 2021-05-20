@@ -20,6 +20,8 @@ public class Event implements Listener {
     // インタラクトだと2回呼ばれてうざいからダメージにしたけどこれだとクリエになられると動かないね
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent e){
+        e.setCancelled(true);
+
         Player gm;
         Entity entd = e.getDamager();
         Player clicked;
@@ -35,9 +37,10 @@ public class Event implements Listener {
             gm.sendMessage(Umigame.MessagePrefix + "ゲーム外です");
             return;
         }
-        if(UPlayer.getUPlayer(clicked).getGM()){ return; }
 
-        e.setCancelled(true);
+        if(!(UPlayer.map.containsKey(clicked))){ return; }
+
+        if(UPlayer.getUPlayer(clicked).getGM()){ return; }
 
         if(gm.getInventory().getItemInMainHand().getType().equals(Material.GOLD_BLOCK)) {
             UPlayer.getUPlayer(clicked).addGpoint(1);
@@ -70,6 +73,6 @@ public class Event implements Listener {
 
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent e){
-        if(GameProcess.GAME){ e.setCancelled(true); }
+        e.setCancelled(true);
     }
 }

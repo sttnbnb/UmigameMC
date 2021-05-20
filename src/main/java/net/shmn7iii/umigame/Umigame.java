@@ -1,21 +1,12 @@
 package net.shmn7iii.umigame;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 
-import java.util.HashMap;
 import java.util.Objects;
 
 public final class Umigame extends JavaPlugin {
     public static Umigame plugin = null;
-    public static ScoreboardManager manager;
-    public static Scoreboard board;
-    public static Objective SCUMIGAME;
 
     public static String MessagePrefix = "" + ChatColor.AQUA + ChatColor.BOLD + "[UMGM] " + ChatColor.RESET;
 
@@ -29,13 +20,16 @@ public final class Umigame extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Event(this), this);
 
 
-        registScoreBoard();
-
+        ScoreBoard.registScoreBoard();
 
         saveDefaultConfig();
-        saveResource("Questions/sample.txt",false);
-        saveResource("Answers/sample.txt",false);
         Config.load();
+
+        try{
+            saveResource("Questions/sample.txt",false);
+            saveResource("Answers/sample.txt",false);
+        } catch (Exception ignored) { }
+
 
         getLogger().info("Hello!");
     }
@@ -43,18 +37,7 @@ public final class Umigame extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Goodbye!");
-        unregistScoreBoard();
+        ScoreBoard.unregisterScoreBoard();
     }
 
-    public static void registScoreBoard(){
-        manager = Bukkit.getScoreboardManager();
-        board = manager.getMainScoreboard();
-        SCUMIGAME = board.registerNewObjective("umigame","dummy",""+ ChatColor.GREEN + ChatColor.BOLD +"-うみがめのスープ-");
-    }
-
-    public static void unregistScoreBoard(){
-        if(SCUMIGAME != null) {
-            SCUMIGAME.unregister();
-        }
-    }
 }

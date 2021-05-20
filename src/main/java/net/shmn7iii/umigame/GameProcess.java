@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Score;
 
 public class GameProcess {
     public static UPlayer GM;
@@ -18,14 +17,14 @@ public class GameProcess {
         }
 
         GAME = true;
-        Umigame.unregistScoreBoard();
-        Umigame.registScoreBoard();
+        ScoreBoard.unregisterScoreBoard();
+        ScoreBoard.registScoreBoard();
 
-        UPlayer.getUPlayer(_GM).setGM(true);
+        UPlayer.setUPlayer(_GM).setGM(true);
 
         int i = 1;
         for(Player p: Bukkit.getOnlinePlayers()){
-            UPlayer uplayer = UPlayer.getUPlayer(p);
+            UPlayer uplayer = UPlayer.setUPlayer(p);
             uplayer.setEpoint(0);
             uplayer.setGpoint(0);
 
@@ -33,12 +32,12 @@ public class GameProcess {
                 GM = uplayer;
                 uplayer.setGM(true);
                 // Scoreboard
-                System.registUmigameScoreboard4GM(uplayer);
+                ScoreBoard.registUmigameScoreboard4GM(uplayer);
             }
             else{
                 // Scoreboard
                 uplayer.setNum(i);
-                System.registUmigameScoreboard4eachPL(uplayer);
+                ScoreBoard.registUmigameScoreboard4eachPL(uplayer);
                 i++;
             }
         }
@@ -51,7 +50,7 @@ public class GameProcess {
             p.setAllowFlight(true);
         }
 
-        Umigame.SCUMIGAME.setDisplaySlot(DisplaySlot.SIDEBAR);
+        ScoreBoard.SCUMIGAME.setDisplaySlot(DisplaySlot.SIDEBAR);
 
     }
 
@@ -60,7 +59,9 @@ public class GameProcess {
         for(Player p: Bukkit.getOnlinePlayers()){
             p.setAllowFlight(false);
         }
-        Umigame.SCUMIGAME.setDisplaySlot(null);
+        ScoreBoard.SCUMIGAME.setDisplaySlot(null);
         System.displayRanking();
+        UPlayer.reset();
+        Bukkit.broadcastMessage("続けて次のゲームを行う場合はサーバーをリロードしてください．");
     }
 }

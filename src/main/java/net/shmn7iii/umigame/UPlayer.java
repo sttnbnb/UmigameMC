@@ -2,24 +2,35 @@ package net.shmn7iii.umigame;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-
 import java.util.HashMap;
 
 public class UPlayer {
-    private static HashMap<Player, UPlayer> map = new HashMap();
+    public static HashMap<Player, UPlayer> map = new HashMap();
     private Player player;
-    //private Scoreboard board;
     private int gpoint;
     private int epoint;
     private int num;
     private boolean GM;
 
-    public static UPlayer getUPlayer(Player playername) {
-        if (!map.containsKey(playername)) {
-            map.put(playername, new UPlayer(playername));
-        }
 
+
+    // 色々やりすぎてわけ分からんくなった．多分現状で多分動くと思うけど変なことするとエラー出ると思う．
+    // getUPlayerでいない人指定した時にエラー吐くと思う．いなかったら追加する処理消したし．
+    public static UPlayer setUPlayer(Player playername){
+        map.put(playername, new UPlayer(playername));
+        return map.get(playername);
+    }
+
+    public static UPlayer getUPlayer(Player playername) {
+        // なんか〜これで判定取ると〜〜，map内にあるのに〜，無い判定されて〜〜，UPlayerが無限に増えるんですよ〜〜〜
+            // なんでなんぶっ飛ばすぞ粕が
+
+//        if (!map.containsKey(playername)) {
+//            Bukkit.broadcastMessage("[debug] b4: " + map);
+//            map.put(playername, new UPlayer(playername));
+//            Bukkit.broadcastMessage("[debug] one added");
+//            Bukkit.broadcastMessage("[debug] af: " + map);
+//        }
         return map.get(playername);
     }
 
@@ -29,8 +40,6 @@ public class UPlayer {
         this.epoint = 0;
         this.GM = false;
         this.num = 0;
-        //this.board = Bukkit.getScoreboardManager().getNewScoreboard();
-        //player.setScoreboard(this.board);
     }
 
     public Player getPlayer(){ return this.player; }
@@ -38,33 +47,33 @@ public class UPlayer {
     public int getGpoint(){ return this.gpoint;}
     public void setGpoint(int _gpoint){
         if(this.num != 0){
-            System.unregistUmigameScoreboard4eachPL(this);
+            ScoreBoard.unregistUmigameScoreboard4eachPL(this);
         }
         this.gpoint = _gpoint;
         if(this.num != 0){
-            System.registUmigameScoreboard4eachPL(this);
+            ScoreBoard.registUmigameScoreboard4eachPL(this);
         }
     }
     public void addGpoint(int _gpoint){
-        System.unregistUmigameScoreboard4eachPL(this);
+        ScoreBoard.unregistUmigameScoreboard4eachPL(this);
         this.gpoint += _gpoint;
-        System.registUmigameScoreboard4eachPL(this);
+        ScoreBoard.registUmigameScoreboard4eachPL(this);
     }
 
     public int getEpoint(){ return this.epoint;}
     public void setEpoint(int _epoint){
         if(this.num != 0){
-            System.unregistUmigameScoreboard4eachPL(this);
+            ScoreBoard.unregistUmigameScoreboard4eachPL(this);
         }
         this.gpoint = _epoint;
         if(this.num != 0){
-            System.registUmigameScoreboard4eachPL(this);
+            ScoreBoard.registUmigameScoreboard4eachPL(this);
         }
     }
     public void addEpoint(int _epoint){
-        System.unregistUmigameScoreboard4eachPL(this);
+        ScoreBoard.unregistUmigameScoreboard4eachPL(this);
         this.epoint += _epoint;
-        System.registUmigameScoreboard4eachPL(this);
+        ScoreBoard.registUmigameScoreboard4eachPL(this);
     }
 
     public boolean getGM(){return this.GM;}
@@ -72,4 +81,9 @@ public class UPlayer {
 
     public int getNum(){ return this.num;}
     public void setNum(int _num){ this.num = _num;}
+
+
+    public static void reset() {
+        map.clear();
+    }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Command implements CommandExecutor, TabCompleter {
 
-    public static String senderErrorMessage = "This command can't execute via server console!";
+    public static String senderErrorMessage = "Can't execute this from server console!";
 
     private static final String[] SUBCOMMANDS = { "help", "start", "end", "question", "answer", "pinpon"};
 
@@ -68,7 +68,7 @@ public class Command implements CommandExecutor, TabCompleter {
             }
             else if (args[0].equalsIgnoreCase("question")){
                 if(args.length == 2){
-                    System.broadcastQuestion(args[1]);
+                    QA.broadcastQuestion(args[1]);
                 }
                 else{
                     return false;
@@ -77,7 +77,7 @@ public class Command implements CommandExecutor, TabCompleter {
             }
             else if (args[0].equalsIgnoreCase("answer")){
                 if(args.length == 2){
-                    System.broadcastAnswer(args[1]);
+                    QA.broadcastAnswer(args[1]);
                 }
                 else{
                     return false;
@@ -85,10 +85,23 @@ public class Command implements CommandExecutor, TabCompleter {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("pinpon")){
+                if(sender instanceof Player) {
+                    Player player = (Player) sender;
+                    if(args.length == 2){
+                        PinPon.doPinpon(player);
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                else{
+                    sender.sendMessage(senderErrorMessage);
+                }
                 return true;
             }
-
-
+            else if (args[0].equalsIgnoreCase("debug")){
+                Bukkit.broadcastMessage(String.valueOf(UPlayer.getUPlayer((Player)sender)));
+            }
             else {
                 return false;
             }
