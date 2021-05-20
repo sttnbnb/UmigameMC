@@ -1,0 +1,20 @@
+name: Umigame
+version: ${project.version}
+main: net.shmn7iii.umigame.Umigame
+api-version: 1.16
+prefix: UMGM
+authors: [ shmn7iii ]
+description: Situation Quiz in Minecraft
+website: www.shmn7iii.net
+
+commands:
+  umigame:
+    description: Umigame's Commands
+    aliases: u
+    permission: Umigame.OP
+    permission-message: You don't have permission.
+
+permissions:
+  Umigame.*:
+    description: Umigame's Permission
+    default: op
