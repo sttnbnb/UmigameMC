@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
 
@@ -19,7 +20,7 @@ public class Event implements Listener {
 
     // インタラクトだと2回呼ばれてうざいからダメージにしたけどこれだとクリエになられると動かないね
     @EventHandler
-    public void onEntityDamage(EntityDamageByEntityEvent e){
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent e){
         e.setCancelled(true);
 
         Player gm;
@@ -73,6 +74,11 @@ public class Event implements Listener {
 
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent e){
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent e){
         e.setCancelled(true);
     }
 }

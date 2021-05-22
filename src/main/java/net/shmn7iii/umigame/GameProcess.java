@@ -33,6 +33,7 @@ public class GameProcess {
                 uplayer.setGM(true);
                 // Scoreboard
                 ScoreBoard.registUmigameScoreboard4GM(uplayer);
+                //TODO: アイテム渡したいね
             }
             else{
                 // Scoreboard
@@ -60,7 +61,7 @@ public class GameProcess {
             p.setAllowFlight(false);
         }
         ScoreBoard.SCUMIGAME.setDisplaySlot(null);
-        System.displayRanking();
+        System.displayGPointRanking();
         UPlayer.reset();
         Bukkit.broadcastMessage("続けて次のゲームを行う場合はサーバーをリロードしてください．");
     }

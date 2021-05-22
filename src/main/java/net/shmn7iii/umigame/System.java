@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class System {
     // 単純にdisplayするだけ
-    public static void displayRanking(){
+    public static void displayGPointRanking(){
         ArrayList<String[]> ranking = new ArrayList<>();
         HashMap<Integer,UPlayer> map = new HashMap<>();
 
@@ -40,14 +40,19 @@ public class System {
             ranking.add(0,list);
         }
 
-        Bukkit.broadcastMessage("==" + ChatColor.RED + ChatColor.BOLD + " [最終結果] " + ChatColor.RESET + "=====================================");
+        Bukkit.broadcastMessage("");
+        Bukkit.broadcastMessage("===" + ChatColor.RED + ChatColor.BOLD + " [最終結果] " + ChatColor.RESET + "=====================================");
+        Bukkit.broadcastMessage("");
         int rank = 1;
         for(String[] str:ranking){
             Bukkit.broadcastMessage("" + ChatColor.GOLD + ChatColor.BOLD + rank + "位" + ChatColor.RESET
                     + " - " + ChatColor.YELLOW + "正答ポイント: " + ChatColor.GOLD + ChatColor.BOLD + str[0] + ChatColor.RESET
                     + " - " + ChatColor.GREEN + "質問ポイント: " + ChatColor.GOLD + ChatColor.BOLD + str[1] + ChatColor.RESET
                     + " - " + ChatColor.AQUA + ChatColor.BOLD + str[2]);
+            Bukkit.broadcastMessage("");
+            rank++;
         }
         Bukkit.broadcastMessage("================================================");
+        Bukkit.broadcastMessage("");
     }
 }
