@@ -17,7 +17,7 @@ public class Command implements CommandExecutor, TabCompleter {
 
     public static String senderErrorMessage = "Can't execute this from server console!";
 
-    private static final String[] SUBCOMMANDS = { "help", "start", "end", "question", "answer", "pinpon"};
+    public static ArrayList<String> SUBCOMMANDS = new ArrayList<>(Arrays.asList("help", "start", "end", "question", "answer", "pinpon"));
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String commandLabel, String[] args) {
@@ -29,10 +29,10 @@ public class Command implements CommandExecutor, TabCompleter {
                 sender.sendMessage("  - Start game. You can specify GM with the first argument. When not, executor will be it.");
                 sender.sendMessage("\n" + ChatColor.GOLD + ChatColor.BOLD + "/umigame end");
                 sender.sendMessage("  - End game.");
-                sender.sendMessage("\n" + ChatColor.GOLD + ChatColor.BOLD + "/umigame question <filename>");
-                sender.sendMessage("  - Broadcast question content you stored before game. *FILENAME DOES NOT REQUIRE EXTENSION\n  e.g.) sample.txt -> \"/umigame question sample\"");
-                sender.sendMessage("\n" + ChatColor.GOLD + ChatColor.BOLD + "/umigame answer <filename>");
-                sender.sendMessage("  - Broadcast answer content you stored before game. *FILENAME DOES NOT REQUIRE EXTENSION\n  e.g.) sample.txt -> \"/umigame answer sample\"");
+                sender.sendMessage("\n" + ChatColor.GOLD + ChatColor.BOLD + "/umigame question <filename.txt>");
+                sender.sendMessage("  - Broadcast question content you stored before game. *FILENAME DOES NOT REQUIRE EXTENSION\n  e.g.) sample.txt -> \"/umigame question sample.txt\"");
+                sender.sendMessage("\n" + ChatColor.GOLD + ChatColor.BOLD + "/umigame answer <filename.txt>");
+                sender.sendMessage("  - Broadcast answer content you stored before game. *FILENAME DOES NOT REQUIRE EXTENSION\n  e.g.) sample.txt -> \"/umigame answer sample.txt\"");
 
                 return true;
             }
@@ -85,22 +85,39 @@ public class Command implements CommandExecutor, TabCompleter {
                 return true;
             }
             else if (args[0].equalsIgnoreCase("pinpon")){
-                if(sender instanceof Player) {
-                    Player player = (Player) sender;
-                    if(args.length == 2){
+                if(args.length == 2) {
+                    PinPon.doPinpon(Bukkit.getPlayer(args[1]));
+                    return true;
+                }
+                else{
+                    if(sender instanceof Player) {
+                        Player player = (Player) sender;
                         PinPon.doPinpon(player);
                     }
                     else{
-                        return false;
+                        sender.sendMessage(senderErrorMessage);
                     }
-                }
-                else{
-                    sender.sendMessage(senderErrorMessage);
                 }
                 return true;
             }
             else if (args[0].equalsIgnoreCase("debug")){
-                Bukkit.broadcastMessage(String.valueOf(UPlayer.getUPlayer((Player)sender)));
+                if(args[1].equalsIgnoreCase("setGPoint")){
+                    try{
+                        UPlayer.getUPlayer(Bukkit.getPlayer(args[2])).setGpoint(Integer.parseInt(args[3]));
+                    } catch (NumberFormatException e) {
+                        sender.sendMessage("/umigame debug setGPoint <Player> <GPoint>");
+                    }
+                }
+                else if(args[1].equalsIgnoreCase("setEPoint")){
+                    try{
+                        UPlayer.getUPlayer(Bukkit.getPlayer(args[2])).setEpoint(Integer.parseInt(args[3]));
+                    } catch (NumberFormatException e) {
+                        sender.sendMessage("/umigame debug setEPoint <Player> <EPoint>");
+                    }
+                }
+                else if(args[1].equalsIgnoreCase("getUPlayer")){
+                    Bukkit.broadcastMessage(String.valueOf(UPlayer.getUPlayer((Player)sender)));
+                }
             }
             else {
                 return false;
@@ -119,7 +136,7 @@ public class Command implements CommandExecutor, TabCompleter {
         //create new array
         final List<String> completions = new ArrayList<>();
         //copy matches of first argument from list (ex: if first arg is 'm' will return just 'minecraft')
-        StringUtil.copyPartialMatches(args[0], Arrays.asList(SUBCOMMANDS), completions);
+        StringUtil.copyPartialMatches(args[0], SUBCOMMANDS, completions);
         //sort the list
         Collections.sort(completions);
         return completions;

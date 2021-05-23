@@ -7,15 +7,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class QA {
+
     public static String getTXTContent(String filename){
         StringBuilder sb = new StringBuilder();
         try {
-            // ファイルのパスを指定する
-            File file = new File("./plugins/Umigame/" + filename + ".txt");
+            File file = new File("./plugins/Umigame/" + filename);
 
-            // ファイルが存在しない場合に例外が発生するので確認する
             if (!file.exists()) {
                 return "エラー:ファイルが存在しません - " + filename;
             }
@@ -37,10 +37,38 @@ public class QA {
     }
 
     public static void broadcastQuestion(String filename){
-        Bukkit.broadcastMessage(""+ ChatColor.GREEN + ChatColor.BOLD + "[問題]\n" + ChatColor.RESET + getTXTContent("Questions/" + filename));
+        Bukkit.broadcastMessage(""+ ChatColor.GREEN + ChatColor.BOLD + "[問題]  「" + filename.replace(".txt", "") + "」\n" + ChatColor.RESET + getTXTContent("Questions/" + filename));
     }
 
     public static void broadcastAnswer(String filename){
-        Bukkit.broadcastMessage(""+ ChatColor.RED + ChatColor.BOLD + "[解答]\n" + ChatColor.RESET + getTXTContent("Answers/" + filename));
+        Bukkit.broadcastMessage(""+ ChatColor.RED + ChatColor.BOLD + "[解答]  「" + filename.replace(".txt", "") + "」\n" + ChatColor.RESET + getTXTContent("Answers/" + filename));
     }
+
+
+    public static void loadFiles(){
+
+        File file = new File("./plugins/Umigame/Questions/");
+        File[] files = file.listFiles();
+
+        if(files != null){
+            for (File item : files) {
+                if(!(item.getName().startsWith("_"))){
+                    Command.SUBCOMMANDS.add("question " + item.getName());
+                }
+            }
+        }
+
+        File filea = new File("./plugins/Umigame/Answers/");
+        File[] filesa = filea.listFiles();
+
+        if(filesa != null){
+            for (File item : filesa) {
+                if(!(item.getName().startsWith("_"))){
+                    Command.SUBCOMMANDS.add("answer " + item.getName());
+                }
+            }
+        }
+    }
+
+
 }

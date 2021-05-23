@@ -1,9 +1,6 @@
 package net.shmn7iii.umigame;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,7 +36,7 @@ public class Event implements Listener {
             return;
         }
 
-        if(!(UPlayer.map.containsKey(clicked))){ return; }
+        if(!(UPlayer.map.containsKey(clicked.getDisplayName()))){ return; }
 
         if(UPlayer.getUPlayer(clicked).getGM()){ return; }
 
@@ -55,7 +52,6 @@ public class Event implements Listener {
                 p.sendMessage(Umigame.MessagePrefix + clicked.getDisplayName() + ": " + ChatColor.GOLD + "質問ポイント +1 !");
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
             }
-
         }
     }
 
@@ -66,6 +62,10 @@ public class Event implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
+        if(GameProcess.GAME){
+            e.getPlayer().setAllowFlight(true);
+            e.getPlayer().setGameMode(GameMode.ADVENTURE);
+        }
     }
 
     @EventHandler

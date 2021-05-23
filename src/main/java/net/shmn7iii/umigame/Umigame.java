@@ -3,6 +3,7 @@ package net.shmn7iii.umigame;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.Objects;
 
 public final class Umigame extends JavaPlugin {
@@ -19,17 +20,14 @@ public final class Umigame extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new Event(this), this);
 
-
         ScoreBoard.registScoreBoard();
 
         saveDefaultConfig();
         Config.load();
 
-        try{
-            saveResource("Questions/sample.txt",false);
-            saveResource("Answers/sample.txt",false);
-        } catch (Exception ignored) { }
-
+        saveIfNotExist("Questions/_sample.txt");
+        saveIfNotExist("Answers/_sample.txt");
+        saveIfNotExist("README.txt");
 
         getLogger().info("Hello!");
     }
@@ -38,6 +36,13 @@ public final class Umigame extends JavaPlugin {
     public void onDisable() {
         getLogger().info("Goodbye!");
         ScoreBoard.unregisterScoreBoard();
+    }
+
+    public static void saveIfNotExist(String pathWOPLFILE){
+        File file = new File("./plugins/Umigame/" + pathWOPLFILE);
+        if(!(file.exists())){
+            plugin.saveResource(pathWOPLFILE,false);
+        }
     }
 
 }

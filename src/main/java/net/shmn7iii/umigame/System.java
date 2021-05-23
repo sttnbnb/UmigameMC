@@ -17,8 +17,8 @@ public class System {
         ArrayList<String[]> ranking = new ArrayList<>();
         HashMap<Integer,UPlayer> map = new HashMap<>();
 
-        for(Player p:UPlayer.map.keySet()){
-            UPlayer uplayer = UPlayer.getUPlayer(p);
+        for(String pn:UPlayer.map.keySet()){
+            UPlayer uplayer = UPlayer.getUPlayer(Bukkit.getPlayer(pn));
             if(!(uplayer.getGM())){
                 map.put(uplayer.getGpoint(), uplayer);
             }

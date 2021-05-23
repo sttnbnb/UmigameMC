@@ -5,37 +5,32 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 public class UPlayer {
-    public static HashMap<Player, UPlayer> map = new HashMap();
+    public static HashMap<String, UPlayer> map = new HashMap();
     private Player player;
+    private String playername;
     private int gpoint;
     private int epoint;
     private int num;
     private boolean GM;
 
-
-
-    // 色々やりすぎてわけ分からんくなった．多分現状で多分動くと思うけど変なことするとエラー出ると思う．
-    // getUPlayerでいない人指定した時にエラー吐くと思う．いなかったら追加する処理消したし．
-    public static UPlayer setUPlayer(Player playername){
-        map.put(playername, new UPlayer(playername));
-        return map.get(playername);
+    // mapのkeyをPlayerではなくプレイヤーネームのString型に変更してみた．setは廃止でgetで無ければ生成する方式をとりあえず採用．
+    // これでリログしてPlayer型が変わっても同一UPlayerが得られるはず...?
+    // ただし，既知のバグとしてゲーム中にレフト，名前を変えてジョインした場合はバグる．そんなんことはあるはずない．UUIDで回避するコストは高すぎる．
+    public static UPlayer setUPlayer(Player player){
+        map.put(player.getDisplayName(), new UPlayer(player));
+        return map.get(player.getDisplayName());
     }
 
-    public static UPlayer getUPlayer(Player playername) {
-        // なんか〜これで判定取ると〜〜，map内にあるのに〜，無い判定されて〜〜，UPlayerが無限に増えるんですよ〜〜〜
-            // なんでなんぶっ飛ばすぞ粕が
-
-//        if (!map.containsKey(playername)) {
-//            Bukkit.broadcastMessage("[debug] b4: " + map);
-//            map.put(playername, new UPlayer(playername));
-//            Bukkit.broadcastMessage("[debug] one added");
-//            Bukkit.broadcastMessage("[debug] af: " + map);
-//        }
-        return map.get(playername);
+    public static UPlayer getUPlayer(Player player) {
+        if (!map.containsKey(player.getDisplayName())) {
+            map.put(player.getDisplayName(), new UPlayer(player));
+        }
+        return map.get(player.getDisplayName());
     }
 
     public UPlayer(Player player) {
         this.player = player;
+        this.playername = player.getDisplayName();
         this.gpoint = 0;
         this.epoint = 0;
         this.GM = false;
