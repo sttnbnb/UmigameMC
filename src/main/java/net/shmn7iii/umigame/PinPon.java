@@ -3,6 +3,8 @@ package net.shmn7iii.umigame;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 
@@ -26,6 +28,10 @@ public class PinPon {
             PPM.put(i,player);
             display(i, player);
         }
+
+        //TODO:未テスト
+        player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5, 1, false, false, false));
+
     }
 
     public static void display(int i, Player player){
