@@ -6,8 +6,8 @@ import java.util.HashMap;
 
 public class UPlayer {
     public static HashMap<String, UPlayer> map = new HashMap();
-    private Player player;
-    private String playername;
+    private final Player player;
+    private final String playername;
     private int gpoint;
     private int epoint;
     private int num;
@@ -15,11 +15,14 @@ public class UPlayer {
 
     // mapのkeyをPlayerではなくプレイヤーネームのString型に変更してみた．setは廃止でgetで無ければ生成する方式をとりあえず採用．
     // これでリログしてPlayer型が変わっても同一UPlayerが得られるはず...?
-    // ただし，既知のバグとしてゲーム中にレフト，名前を変えてジョインした場合はバグる．そんなんことはあるはずない．UUIDで回避するコストは高すぎる．
+    // ただし，予想されるバグとしてゲーム中にレフト，名前を変えてジョインした場合はバグる．まあそんなんことはあるはずない．UUIDで回避するコストは高すぎる．
+
+    /*
     public static UPlayer setUPlayer(Player player){
         map.put(player.getDisplayName(), new UPlayer(player));
         return map.get(player.getDisplayName());
     }
+     */
 
     public static UPlayer getUPlayer(Player player) {
         if (!map.containsKey(player.getDisplayName())) {
@@ -38,6 +41,8 @@ public class UPlayer {
     }
 
     public Player getPlayer(){ return this.player; }
+
+    public String getPlayername(){ return this.playername; }
 
     public int getGpoint(){ return this.gpoint;}
     public void setGpoint(int _gpoint){
